@@ -8,6 +8,7 @@ public class PlayerControl : MonoBehaviour {
 	public float delayLimit = 0.25f;
 	public float speed = 0.5f;
 
+    private Animator anim;
 	private float delay = 0.0f;
 	private bool inputZ = false;
 	private bool inputX = false;
@@ -17,6 +18,7 @@ public class PlayerControl : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D> ();
+        anim = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -40,7 +42,7 @@ public class PlayerControl : MonoBehaviour {
 			MoveRight();
 			DelayOver ();
 		}
-
+        SetAnimParam();
 		delay += Time.deltaTime;
 	}
 
@@ -55,19 +57,19 @@ public class PlayerControl : MonoBehaviour {
 	}
 
 	void MoveUp(){
-		rb2d.velocity = new Vector2 (rb2d.velocity.x, 0f);
+        rb2d.velocity = new Vector2 (rb2d.velocity.x, 0f);
 		rb2d.AddForce (Vector2.up * force);
 		Debug.Log ("A");
 	}
 
 	void MoveRight(){
-		rb2d.velocity = Vector2.right * speed;
+        rb2d.velocity = Vector2.right * speed;
 		Debug.Log ("R");
 	}
 	void MoveLeft(){
-		Debug.Log ("L");
-		rb2d.velocity = Vector2.left * speed;
-	}
+        rb2d.velocity = Vector2.left * speed;
+        Debug.Log("L");
+    }
 
 	void DelayOver(){
 		inputX = false;
@@ -75,4 +77,8 @@ public class PlayerControl : MonoBehaviour {
 		delay = 0;
 	}
 
+    void SetAnimParam() {
+        anim.SetFloat("x axis", rb2d.velocity.x);
+        anim.SetFloat("y axis", rb2d.velocity.y);
+    }
 }
